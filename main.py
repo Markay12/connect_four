@@ -10,10 +10,13 @@ def is_placement_valid(game, column): #check to make sure the placement of the g
     #board[row][column]
     return game[5][column] == 0 #boolean statement to check if placement is valid
 
-def 
+def is_player_selection(player_selection): #check player selection 
+    if player_selection > 7 or player_selection < 1: #if not within bounds == False
+        return False
+    elif player_selection > 0 and player_selection < 8: #if selection is within bounds
+        return True
 
-
-
+    
 
 game = game_board() #draws the initial gameboard
 game_over = False #create game_over variable for main game loop
@@ -28,10 +31,8 @@ while not game_over:
 
         player_1_selection = player_1_selection - 1 #columns begin at 1 for user readability
 
-        if player_1_selection > 7 or player_1_selection < 1: #if the player input is out of range, game will not play and turn will not increment, gives error message
-            print("Input out of range\n---Try Again---\n")
-        elif player_1_selection > 0 and player_1_selection < 8: #if player is within game bounds
-
+        if is_player_selection(player_1_selection): #if the player input is out of range, game will not play and turn will not increment, gives error message
+            
             #TODO: update game here
 
             #nump.flip(<matrix>, <axis>) ; in this case we flipped over the x-axis
@@ -39,6 +40,8 @@ while not game_over:
             print("\n") #spacing
             turn = turn + 1 #player has played, turn gets incremented
 
+        else: #if player is within game bounds
+            print("Input out of range\n---Try Again---\n")
 
 
     if turn % 2 != 0: #if turn is an odd number it is player two turn
@@ -48,16 +51,17 @@ while not game_over:
 
         player_2_selection = player_2_selection - 1 #columns begin at 1
 
-        if player_2_selection > 7 or player_2_selection < 1: #if the player input is out of range, game will not play and turn will not increment, gives error message
-            print("Input out of range\n---Try Again---\n")
-        elif player_2_selection > 0 and player_2_selection < 8: #if the player makes a correct selection
-
+        if is_player_selection(player_2_selection): #if the player input is out of range, game will not play and turn will not increment, gives error message
             # TODO: Update game here!
 
             print(nump.flip(game, 0)) #print the game updated, flip the board as we initially show it starting top down 
             print("\n")
 
             turn = turn + 1 #increment the turns
+
+        else: #if the player makes a correct selection
+            print("Input out of range\n---Try Again---\n")
+            
 
 
 
