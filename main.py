@@ -73,19 +73,41 @@ game_over = False #create game_over variable for main game loop
 turn = 0 #initialize turn to 0 which will start with player one
 winner = 0 #winner set to 1 if player one wins and 2 if player 2 wins
 
+PLAYER1_NAME = input("---------------------------\nPlayer 1.. What is your name? --->  ")
+print("---------------------------\n")
+PLAYER2_NAME = input("---------------------------\nPlayer 2.. What is your name? ---> ")
+print("---------------------------\n")
+
+
 while not game_over:
 
     #init check while going through loop to see if someone has won
     if player_win(game, 1): #check to see if player one has won
         winner = 1 #set var to 1 so we know player one won
-        game_over = True #endgame
+        print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n---------------------")
+        play_again = input("Would you like to play again? (Y/n): ")
+        if play_again.lower() == 'y':
+            game = game_board() #reset the game board to zeroes
+            turn = 0 #reset turn to 0
+            print("\n\n\n\n")
+            game_over == False
+        else:
+            game_over = True #endgame
     elif player_win(game, 2): #check to see if player two has won
         winner = 2 #set var to 2 so we know player one won
-        game_over = True #endgame
+        print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n---------------------") 
+        play_again = input("Would you like to play again? (Y/n): ")
+        if play_again.lower() == 'y':
+            game = game_board() #reset the game board to zeroes
+            turn = 0 #reset turn to 0
+            print("\n\n\n\n")
+            game_over == False
+        else:
+            game_over = True #endgame
 
     elif turn % 2 == 0: #if turn is an even number it is player one turn
 
-        print("Player 1 Turn\n---------------")
+        print(PLAYER1_NAME + " it is your turn\n---------------")
         player_1_selection = int(input("Choose a column --> ")) #cast input to integer for column selection
         print("\n") #spacing for game board
 
@@ -110,7 +132,7 @@ while not game_over:
 
 
     elif turn % 2 != 0: #if turn is an odd number it is player two turn
-        print("Player 2 Turn\n------------")
+        print(PLAYER2_NAME + " it is your turn\n------------")
         player_2_selection = int(input("Choose a column --> "))
         print("\n") #spacing for game board
 
@@ -132,7 +154,7 @@ while not game_over:
 
     
 if winner == 1: #final game win, check variable winner to see which player one and respective message
-    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n---------------------")
+    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n---------------------\n\n")
 if winner == 2:
    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n---------------------") 
                
