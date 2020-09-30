@@ -1,3 +1,8 @@
+#Name: Mark Ashinhust
+#Date: 09/29/2020
+#Description: Game of connect four with the command line. Play against yourself or a friend and see who can get four in a row first!
+
+
 # import numpy package as interpreter for arrays
 import numpy as nump
 
@@ -126,10 +131,10 @@ while not game_over:
             print("Input out of range\n---Try Again---\n")
 
     
-if winner == 1:
-    print("/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n")
+if winner == 1: #final game win, check variable winner to see which player one and respective message
+    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n---------------------")
 if winner == 2:
-   print("/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n") 
+   print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n---------------------") 
                
 
 
