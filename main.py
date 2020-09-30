@@ -45,8 +45,23 @@ def player_win(game, player_piece): #to check winning conditions
                         if game[row+3][column] == player_piece:
                             return True #return true if we have a four in a row vertically
 
+    for column in range(4): #check four columns
+        for row in range(3): #increment the rows stepwise to complete the positive slope upwards
+            if game[row][column] == player_piece:
+                if game[row+1][column+1] == player_piece:
+                    if game[row+2][column+2] == player_piece:
+                        if game[row+3][column+3] == player_piece:
+                            return True #return true for positive slope
 
-    return False
+    for column in range(4): #check four columns
+        for row in range(3, 6): #we only want to check from the top down because of the negative slopes
+            if game[row][column] == player_piece:
+                if game[row-1][column+1] == player_piece:
+                    if game[row-2][column+2] == player_piece:
+                        if game[row-3][column+3] == player_piece:
+                            return True #return true for negative slope
+
+    return False #return false if none of our cases come back as true
 
 game = game_board() #draws the initial gameboard
 game_over = False #create game_over variable for main game loop
@@ -111,7 +126,11 @@ while not game_over:
             print("Input out of range\n---Try Again---\n")
 
     
-            
+if winner == 1:
+    print("/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n")
+if winner == 2:
+   print("/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n") 
+               
 
 
 
