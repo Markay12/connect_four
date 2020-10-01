@@ -16,7 +16,7 @@ def is_placement_valid(game, column): #check to make sure the placement of the g
     return game[5][column] == 0 #boolean statement to check if placement is valid
 
 def is_player_selection(player_selection): #check player selection 
-    if player_selection < 1 or player_selection > 7:
+    if player_selection < 0 or player_selection > 7:
         return False
     else:
         return True
@@ -72,7 +72,7 @@ game = game_board() #draws the initial gameboard
 game_over = False #create game_over variable for main game loop
 turn = 0 #initialize turn to 0 which will start with player one
 winner = 0 #winner set to 1 if player one wins and 2 if player 2 wins
-amount_games = 0 #how many games were played
+amount_games = 1 #how many games were played
 player_1_win_count = 0 #how many games did player 1 win?
 player_2_win_count = 0 #how many games did player 2 win?
 
@@ -127,6 +127,7 @@ while not game_over:
                 print("\n\n\n\n")
                 game_over == False
             else:
+                player_1_win_count = player_1_win_count + 1  #player 1 still one and increments
                 game_over = True #endgame
         elif player_win(game, 2): #check to see if player two has won
             winner = 2 #set var to 2 so we know player one won
@@ -140,6 +141,7 @@ while not game_over:
                 print("\n\n\n\n")
                 game_over == False
             else:
+                player_2_win_count = player_2_win_count + 1
                 game_over = True #endgame
 
         elif turn % 2 == 0: #if turn is an even number it is player one turn
@@ -194,10 +196,12 @@ if winner == 1 and amount_games == 0: #final game win, check variable winner to 
     print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n---------------------\n\n")
 elif winner == 2 and amount_games == 0:
    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n---------------------")
-elif amount_games > 0 and winner == 1:
+elif amount_games > 1 and winner == 1:
     print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins the Final Game\n\n\n||||||||||||||||||||||||||||||\n FINAL MATCH STATISTICS\n\nAmount of Games Played: " + str(amount_games) +"\n\nPlayer 1 Score --> " + str(player_1_win_count) + "\nPlayer 2 Score --> " + str(player_2_win_count) + "\n\n\n/////////////////////\n---------------------")
-elif amount_games > 0 and winner == 2:
+    end = input("\nPress any Key to exit")
+elif amount_games > 1 and winner == 2:
     print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins the Final Game\n\n\n||||||||||||||||||||||||||||||\n FINAL MATCH STATISTICS\n\nAmount of Games Played: " + str(amount_games) +"\n\nPlayer 1 Score --> " + str(player_1_win_count) + "\nPlayer 2 Score --> " + str(player_2_win_count) + "\n\n\n/////////////////////\n---------------------")
+    end = input("\nPress any Key to exit")
                
 
 
