@@ -12,7 +12,7 @@ class players:
     def get_name(self):
         return str(self.name)
 
-    def add_win(self, points):
+    def add_win(self):
         self.points = self.points + 1
 
     def set_score(self, score):
