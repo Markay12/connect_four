@@ -5,9 +5,13 @@
 
 # import numpy package as interpreter for arrays
 import numpy as nump
+from players import players as new_player
+
+COLUMNS = 7
+ROWS = 6
 
 def game_board():
-    game_board = nump.zeros((6, 7)) #create a game board that is an array of 6 rows and 7 columns
+    game_board = nump.zeros((ROWS, COLUMNS)) #create a game board that is an array of 6 rows and 7 columns
     return game_board
 
 def is_placement_valid(game, column): #check to make sure the placement of the game pieces are valid
@@ -22,7 +26,7 @@ def is_player_selection(player_selection): #check player selection
         return True
 
 def get_next(game, column):
-    for rows in range(6):
+    for rows in range(ROWS):
         if game[rows][column] == 0: #if this column and row has a zero, nothing has been placed == VALID LOCATION
             return rows #where can we now place this row
 
@@ -31,8 +35,8 @@ def place(game, row, column, player_piece):
 
 def player_win(game, player_piece): #to check winning conditions
     #check horizontal win
-    for column in range(4): #has to have 4 in a row to win, so we check 4 times and 4 columns
-        for row in range(6): #check all of the rows
+    for column in range(COLUMNS - 3): #has to have 4 in a row to win, so we check 4 times and 4 columns
+        for row in range(ROWS): #check all of the rows
             #go through each column in a line and see if this player piece appears in each, same row next column over
             if game[row][column] == player_piece:
                 if game[row][column+1] == player_piece:
@@ -42,8 +46,8 @@ def player_win(game, player_piece): #to check winning conditions
 
     #check for a vertical win
     #same idea as the horizontal check, however, now we just increment the rows
-    for column in range(7): #total columns
-        for row in range(3): #move through rows checking for a 4 in a row vertically
+    for column in range(COLUMNS): #total columns
+        for row in range(ROWS - 3): #move through rows checking for a 4 in a row vertically
             if game[row][column] == player_piece:
                 if game[row+1][column] == player_piece:
                     if game[row+2][column] == player_piece:
@@ -73,8 +77,6 @@ game_over = False #create game_over variable for main game loop
 turn = 0 #initialize turn to 0 which will start with player one
 winner = 0 #winner set to 1 if player one wins and 2 if player 2 wins
 amount_games = 1 #how many games were played
-player_1_win_count = 0 #how many games did player 1 win?
-player_2_win_count = 0 #how many games did player 2 win?
 
 
 #Play vs yourself and friend or play against ai?
@@ -82,8 +84,8 @@ print("|||||||||||||||||||||||||||\n---------------------------\nGamemode [1] : 
 gamemode = int(input("[1] or [2] ---> "))
 print("---------------------------\n|||||||||||||||||||||||||||\n\n")
 
-PLAYER1_NAME = ""
-PLAYER2_NAME = ""
+player1 = new_player("", 1, 0)
+player2 = new_player("", 2, 0)
 
 #ask for two names if play manually
 if gamemode == 1:
@@ -92,21 +94,16 @@ if gamemode == 1:
     player2_name = input("---------------------------\nPlayer 2.. What is your name? ---> ")
     print("---------------------------\n/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\n\n\n")
 
-    #convert names to Title case in case of mistype
-    player1_name = player1_name.title() 
-    player2_name = player2_name.title()
-
-    PLAYER1_NAME = player1_name
-    PLAYER2_NAME = player2_name
+    player1.set_name(player1_name.title())
+    player2.set_name(player2_name.title())
 
 elif gamemode == 2:
     player1_name = input("---------------------------\nWhat is your name? --->  ")
     print("---------------------------\nYou will be playing against... Mark..")
 
-    player1_name = player1_name.title()
+    player1.set_name(player1_name.title())
 
-    PLAYER1_NAME = player1_name
-    PLAYER2_NAME = "Mark"
+    player2.set_name("Mark")
 
 
 while not game_over:
@@ -123,11 +120,11 @@ while not game_over:
                 game = game_board() #reset the game board to zeroes
                 turn = 0 #reset turn to 0
                 amount_games = amount_games + 1 #increment the amount of games
-                player_1_win_count = player_1_win_count + 1
+                player1.add_win()
                 print("\n\n\n\n")
                 game_over == False
             else:
-                player_1_win_count = player_1_win_count + 1  #player 1 still one and increments
+                player1.add_win() #player 1 still one and increments
                 game_over = True #endgame
         elif player_win(game, 2): #check to see if player two has won
             winner = 2 #set var to 2 so we know player one won
@@ -137,16 +134,16 @@ while not game_over:
                 game = game_board() #reset the game board to zeroes
                 turn = 0 #reset turn to 0
                 amount_games = amount_games + 1 #increment amount of games
-                player_2_win_count = player_2_win_count + 1 #player adds a win
+                player2.add_win() #player adds a win
                 print("\n\n\n\n")
                 game_over == False
             else:
-                player_2_win_count = player_2_win_count + 1
+                player2.add_win()
                 game_over = True #endgame
 
         elif turn % 2 == 0: #if turn is an even number it is player one turn
 
-            print(PLAYER1_NAME + " it is your turn\n---------------")
+            print(player1.get_name() + " it is your turn\n---------------")
             player_1_selection = int(input("Choose a column --> ")) #cast input to integer for column selection
             print("\n") #spacing for game board
 
@@ -171,7 +168,7 @@ while not game_over:
 
 
         elif turn % 2 != 0: #if turn is an odd number it is player two turn
-            print(PLAYER2_NAME + " it is your turn\n------------")
+            print(player2.get_name() + " it is your turn\n------------")
             player_2_selection = int(input("Choose a column --> "))
             print("\n") #spacing for game board
 
@@ -193,14 +190,14 @@ while not game_over:
 
 
 if winner == 1 and amount_games == 0: #final game win, check variable winner to see which player one and respective message
-    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins\n\n/////////////////////\n---------------------\n\n")
+    print("---------------------\n/////////////////////\n\nGame Over\n\n" + player1.get_name() + " Wins\n\n/////////////////////\n---------------------\n\n")
 elif winner == 2 and amount_games == 0:
-   print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins\n\n/////////////////////\n---------------------")
+   print("---------------------\n/////////////////////\n\nGame Over\n\n" + player2.get_name() + " Wins\n\n/////////////////////\n---------------------")
 elif amount_games > 1 and winner == 1:
-    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 1 Wins the Final Game\n\n\n||||||||||||||||||||||||||||||\n FINAL MATCH STATISTICS\n\nAmount of Games Played: " + str(amount_games) +"\n\nPlayer 1 Score --> " + str(player_1_win_count) + "\nPlayer 2 Score --> " + str(player_2_win_count) + "\n\n\n/////////////////////\n---------------------")
+    print("---------------------\n/////////////////////\n\nGame Over\n\n" + player1.get_name() + " Wins the Final Game\n\n\n||||||||||||||||||||||||||||||\n FINAL MATCH STATISTICS\n\nAmount of Games Played: " + str(amount_games) +"\n\n" + player1.get_name() + "'s Score --> " + player1.get_score() + "\n" +player2.get_name() + "'s Score --> " + player2.get_score() + "\n\n\n/////////////////////\n---------------------")
     end = input("\nPress any Key to exit")
 elif amount_games > 1 and winner == 2:
-    print("---------------------\n/////////////////////\n\nGame Over\n\nPlayer 2 Wins the Final Game\n\n\n||||||||||||||||||||||||||||||\n FINAL MATCH STATISTICS\n\nAmount of Games Played: " + str(amount_games) +"\n\nPlayer 1 Score --> " + str(player_1_win_count) + "\nPlayer 2 Score --> " + str(player_2_win_count) + "\n\n\n/////////////////////\n---------------------")
+    print("---------------------\n/////////////////////\n\nGame Over\n\n" + player2.get_name() + " Wins the Final Game\n\n\n||||||||||||||||||||||||||||||\n FINAL MATCH STATISTICS\n\nAmount of Games Played: " + str(amount_games) +"\n\n" + player1.get_name() + "'s Score --> " + player1.get_score() + "\n" + player2.get_name() + "'s Score --> " + player2.get_score() + "\n\n\n/////////////////////\n---------------------")
     end = input("\nPress any Key to exit")
                
 
