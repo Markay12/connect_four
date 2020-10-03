@@ -5,7 +5,7 @@
 
 # import numpy package as interpreter for arrays
 import numpy as nump
-from players import players as new_player
+from ashinhust_players import players as new_player
 
 COLUMNS = 7
 ROWS = 6
